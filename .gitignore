@@ -1,0 +1,10 @@
+*.in
+*.sol
+*.cnt
+*.cc
+*.class
+*.o
+*.swp
+prog
+out.txt
+elapsed.txt
