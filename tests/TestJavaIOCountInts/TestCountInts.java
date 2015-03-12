@@ -13,7 +13,7 @@ import util.Test;
 /** Classe que testa o metodo countInts(). */
 public class TestCountInts extends Test {
     /** Variavel que registra o numero de inteiros lidos. */
-    private final int total = 0;
+    private int total = 0;
     /** Classe responsavel pela leitura e escrita em console. */
     private final IO jio = new IO();
 
