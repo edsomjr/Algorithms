@@ -1,5 +1,5 @@
 /*
- * Classe para teste da classe Time (construtor e métodos de acesso).
+ * Classe para teste do método add() da classe Time
  *
  * Autor: Edson Alves
  * Data: 24/03/2015
