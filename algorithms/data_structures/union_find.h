@@ -58,10 +58,18 @@ public:
     {
         int p = i;
 
-        while (p != parent[p])
-            p = parent[p];
+        vector<int> ps;
 
-        parent[i] = p;
+        while (p != parent[p])
+        {
+            ps.push_back(p);
+            p = parent[p];
+        }
+
+        for (auto x : ps)
+        {
+            parent[x] = p;
+        }
 
         return p;
     }

@@ -1,6 +1,8 @@
 /**
  * Classe Fenwick (BIT) Tree
  *
+ * Esta versão mais simples suporta Point Updates com Range Queries.
+ *
  * Autor: Edson Alves
  * Data: 04/09/2015
  * Licença: LGPL. Sem copyright.
