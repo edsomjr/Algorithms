@@ -1,11 +1,10 @@
 /**
  * Classe que representa uma árvore de segmentos.
  *
- * Esta versão suporta apenas queries estáticas. Os elementos devem ser
- * preenchidos antes da instanciação da classe.
+ * Esta versão suporta point updates.
  *
  * Autor: Edson Alves
- * Data: 21/09/2015
+ * Data: 30/09/2015
  * Licença: LGPL. Sem copyright.
  */
 #ifndef SEGMENT_TREE_H
@@ -35,6 +34,11 @@ public:
     ll RMQ(int i, int j)
     {
         return RMQ(1, 0, m_N - 1, i, j);
+    }
+
+    void update(int p, ll value)
+    {
+        update(1, 0, m_N - 1, p, value);
     }
 
 private:
@@ -91,6 +95,26 @@ private:
         }
 
         return elements[a] <= elements[b] ? a : b;
+    }
+
+    void update(int p, int L, int R, int index, ll value)
+    {
+        if (L == R)
+        {
+            st[index] = index;
+            elements[index] = value;
+            return;
+        }
+
+        int mid = (L + R)/2;
+
+        if (index <= mid)
+            update(left(p), L, (L + R)/2, index, value);
+        else
+            update(right(p), (L + R)/2 + 1, R, index, value);
+
+        int a = st[left(p)], b = st[right(p)];
+        st[p] = elements[a] <= elements[b] ? a : b;
     }
 };
 
