@@ -38,7 +38,7 @@ public:
 
     void update(ll k, ll v)
     {
-        while (k < m_N)
+        while (k <= m_N)
         {
             tree[k] += v;
             k += least_significative_bit(k);
