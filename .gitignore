@@ -2,6 +2,7 @@
 *.class
 *.o
 *.swp
+*.exe
 prog
 out.txt
 elapsed.txt
