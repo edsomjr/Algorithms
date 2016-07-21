@@ -35,6 +35,16 @@ public:
     {
         return PI * r * r;
     }
+
+    double arc(double a) const
+    {
+        return (a / (2*PI)) * perimeter();
+    }
+
+    double chord(double a) const
+    {
+        return 2 * r * sin(a/2);
+    }
 };
 
 #endif
