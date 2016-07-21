@@ -46,3 +46,42 @@ SCENARIO( "circle initialization and point position", "[circle]" )
     }
 }
 
+SCENARIO( "circle perimeter and area", "[circle]" )
+{
+    GIVEN ( "A circle" )
+    {
+        Circle c(Point(0, 0));
+
+        WHEN( "radius equals 1.0" )
+        {
+            c.r = 1.0;
+
+            THEN( "perimeter equals 2*PI" )
+            {
+                REQUIRE( equals(c.perimeter(), 2.0 * PI) );
+            }
+
+            THEN( "area equals PI" )
+            {
+                REQUIRE( equals(c.area(), PI) );
+            }
+        }
+
+        WHEN( "radius equals PI" )
+        {
+            c.r = PI;
+
+            THEN( "perimeter equals 2*PI*PI" )
+            {
+                REQUIRE( equals(c.perimeter(), 2.0 * PI * PI) );
+            }
+
+            THEN( "area equals PI*PI*PI" )
+            {
+                REQUIRE( equals(c.area(), PI * PI * PI) );
+
+            }
+        }
+    }
+}
+

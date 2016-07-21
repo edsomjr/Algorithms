@@ -25,6 +25,16 @@ public:
 
         return equals(d, r) ? ON : (d < r ? IN : OUT);
     }
+
+    double perimeter() const
+    {
+        return 2.0 * PI * r;
+    }
+
+    double area() const
+    {
+        return PI * r * r;
+    }
 };
 
 #endif
