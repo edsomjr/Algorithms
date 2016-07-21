@@ -10,6 +10,10 @@
 
 #include "point.h"
 
+#include <iostream>
+
+using std::pair;
+
 class Line {
     void normalize()
     {
@@ -24,6 +28,8 @@ public:
     double a;
     double b;
     double c;
+
+    typedef enum { ZERO, ONE, INF } Intersections;
 
     Line(double av, double bv, double cv) : a(av), b(bv), c(cv) { normalize(); }
 
@@ -54,6 +60,26 @@ public:
     bool concurrent(const Line& r) const
     {
         return not equals(a * r.b - b * r.a, 0);
+    }
+
+    pair<Intersections, Point> intersections(const Line& r)
+    {
+        auto det = a * r.b - b * r.a;
+
+        if (equals(det, 0))
+        {
+            // Coincidentes
+            if (*this == r)
+                return pair<Intersections, Point>(INF, Point());
+            else    
+                return pair<Intersections, Point>(ZERO, Point());  // Paralelas
+        } else  // Concorrentes
+        {
+            double x = (-c * r.b + r.c * b) / det;
+            double y = (-r.c * a + c * r.a) / det;
+
+            return pair<Intersections, Point>(ONE, Point(x, y));
+        }
     }
 };
 
