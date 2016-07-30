@@ -39,15 +39,49 @@ SCENARIO( "points initialization and distance", "[point]" )
     }
 }
 
-SCENARIO( "rotations", "[point]" )
+SCENARIO( "translations and rotations", "[point]" )
 {
+    GIVEN( "A point P and two deltas (dx and dy)" )
+    {
+        Point P;
+
+        auto dx = 4.0;
+        auto dy = -3.0;
+
+        WHEN( "P is the origin" )
+        {
+            REQUIRE( P == Point(0, 0) );
+
+            THEN( "the translated point Q must have coordinates (dx, dy)" )
+            {
+                auto Q = P.translate(dx, dy);
+
+                REQUIRE( equals(Q.x, dx) );
+                REQUIRE( equals(Q.y, dy) );
+            }
+        }
+
+        WHEN( "P is translated by (dx, dy)" )
+        {
+            P = Point(-1.0, 2.0);
+            auto Q = P.translate(dx, dy);
+ 
+            THEN ( "then P and Q must be different" )
+            {
+                REQUIRE( equals(Q.x, 3.0) );                
+                REQUIRE( equals(Q.y, -1.0) );                
+                REQUIRE( P != Q );
+            }
+        }
+    }
+            
     GIVEN ( "A point" )
     {
         Point P(1, 0);
         
-        WHEN ( "rotated counterclockwise by 90 degrees" )
+        WHEN( "rotated counterclockwise by 90 degrees" )
         {
-            THEN ( "it must be on x ou y axis" )
+            THEN( "it must be on x ou y axis" )
             {
                 P = P.rotate(PI/2);
                 REQUIRE( P == Point(0, 1) );

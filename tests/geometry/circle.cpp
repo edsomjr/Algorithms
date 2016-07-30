@@ -85,3 +85,49 @@ SCENARIO( "circle perimeter and area", "[circle]" )
     }
 }
 
+SCENARIO( "circles with radius r that contains P and Q", "[circle]" )
+{
+    GIVEN ( "Two points P and Q and a radius r" )
+    {
+        Point P, Q(8.0, 0);
+        double r = 5.0;
+
+        WHEN( "P equals Q" )
+        {
+            Q = P;
+
+            THEN( "infinite number of circles with radius r that contains P" )
+            {
+                auto res = circles(P, Q, r);
+
+                REQUIRE( res.first == Circle::INF );
+            }
+        }
+
+        WHEN( "r is lesser or equals than half the distance dist(P, Q)" )
+        {
+            r = 3.0;
+
+            THEN( "there no circle that passes through P and Q with radius r" )
+            {
+                auto res = circles(P, Q, r);
+
+                REQUIRE( res.first == Circle::ZERO );
+            }
+        }
+
+        WHEN( "r is greater than half the distance dist(P, Q)" )
+        {
+            THEN( "there are two circles" )
+            {
+                auto res = circles(P, Q, r);
+
+                REQUIRE( res.first == Circle::TWO );
+                REQUIRE( res.second.first == Circle(Point(4.0, 5.0), r) );
+                REQUIRE( res.second.second == Circle(Point(4.0, -5.0), r) );
+            }
+        }
+    }
+}
+
+

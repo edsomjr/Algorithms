@@ -36,6 +36,11 @@ public:
         return not (*this == P);
     }
 
+    bool operator<(const Point& P) const
+    {
+        return equals(x, P.x) ? y < P.y : x < P.x;
+    }
+
     double distance(const Point& P) const
     {
         return hypot(x - P.x, y - P.y);
@@ -48,6 +53,11 @@ public:
 
         return Point { px, py };
     } 
+
+    Point translate(double dx, double dy) const
+    {
+        return Point(x + dx, y + dy);
+    }
 };
 
 #endif
