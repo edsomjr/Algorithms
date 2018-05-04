@@ -17,7 +17,7 @@ using namespace std;
 
 typedef long long ll;
 
-#define SEGMENT_TREE_MAX 1000005
+#define SEGMENT_TREE_MAX 100005
 
 ll st[4*SEGMENT_TREE_MAX];
 ll elements[SEGMENT_TREE_MAX];
