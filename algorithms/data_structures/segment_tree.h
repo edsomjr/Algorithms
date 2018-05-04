@@ -25,35 +25,22 @@ public:
     {
     }
 
-
-using namespace std;
-
-typedef long long ll;
-
-class SegmentTree
-{
-public:
-    SegmentTree(const vector<ll>& a)
+    T sum(int i, int j)
     {
-        m_N = a.size();
-        m_st.assign(4*m_N, 0);
-
-        build(a, 1, 0, m_N - 1);
+        return sum(1, 0, n - 1, i, j);
     }
 
-    ll RMQ(int i, int j)
+    void add(int a, T value)
     {
-        return RMQ(1, 0, m_N - 1, i, j);
+        add(1, 0, n - 1, a, value);
     }
 
-    void update(int a, int b, ll value)
+    int size() const
     {
-        update(1, 0, m_N - 1, a, b, value);
+        return tree.size();
     }
 
 private:
-    vector<ll> m_st;
-    int m_N;
 
     int left(int p)
     {
@@ -65,67 +52,32 @@ private:
         return 2 * p + 1;
     }
 
-    ll merge(ll a, ll b)
+    T sum(int p, int L, int R, int i, int j)
     {
-        return min(a, b);
+        if (i > R or j < L)         // [i, j] don't intersect [L, R]
+            return 0;
+
+        if (i <= L and R <= j)      // [i, j] contain [L, R]
+            return tree[p];
+
+        T a = sum(left(p), L, (L + R)/2, i, j);
+        T b = sum(right(p), (L + R)/2 + 1, R, i, j);
+
+        return a + b;
     }
 
-    ll inf() const
+    void add(int p, int L, int R, int a, T value)
     {
-        return LLONG_MAX;
-    }
-
-    void build(const vector<ll>& a, int p, int L, int R)
-    {
-        if (L == R)
-        {
-//cout << "defining st[" << p << "] as a[" << L << "] = " << a[L] << endl;
-            m_st[p] = a[L];
+        if (a > R or a < L)         // Base case: a is not int [L, R]
             return;
-        }
-
-        build(a, left(p), L, (L + R)/2);
-        build(a, right(p), (L + R)/2 + 1, R);
-
-        m_st[p] = merge(m_st[left(p)], m_st[right(p)]);
-
-//cout << "defining st[" << p << "] as merge = " << m_st[p] << endl;
-    }
-
-    ll RMQ(int p, int L, int R, int i, int j)
-    {
-        if (i > R || j < L)
-        {
-            return inf();
-        }
-
-        if (L >= i and R <= j)
-        {
-            return m_st[p];
-        }
-
-        ll a = RMQ(left(p), L, (L + R)/2, i, j);
-        ll b = RMQ(right(p), (L + R)/2 + 1, R, i, j);
-
-        return merge(a, b);
-    }
-
-    void update(int p, int L, int R, int a, int b, ll value)
-    {
-        if (a > R || b < L)
-            return;
-
-        if (L == R)
-        {
-            m_st[p] += value;
-            return;
-        }
-
-        update(left(p), L, (L+R)/2, a, b, value);
-        update(right(p), (L+R)/2 + 1, R, a, b, value);
-
         
-        m_st[p] = merge(m_st[left(p)], m_st[right(p)]);
+        tree[p] += value;
+
+        if (L == R)                 // Base case: we reached a leaf
+            return;
+
+        add(left(p), L, (L+R)/2, a, value);
+        add(right(p), (L+R)/2 + 1, R, a, value);
     } 
 };
 

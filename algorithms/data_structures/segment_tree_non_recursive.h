@@ -28,7 +28,7 @@ public:
     {
     }
 
-    void add(int i, int v)                          // Adds v to position i
+    void add(int i, T v)                          // Adds v to position i
     {
         int a = i + n;
 
