@@ -25,7 +25,7 @@ class SegmentTree
 
 public:
     SegmentTree(int N)
-        : n(least_power_of_2_greater_of_equals(N)), tree(2*n, 0)
+        : n(least_power_of_2_greater_or_equals(N)), tree(2*n, 0)
     {
     }
 

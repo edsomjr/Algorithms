@@ -21,7 +21,7 @@ bool is_power_of_2(int n)
     return n > 0 and least_significant_bit(n) == n;
 }
 
-int least_power_of_2_greater_of_equals(int n)
+int least_power_of_2_greater_or_equals(int n)
 {
     if (n < 0)
         return 1;
