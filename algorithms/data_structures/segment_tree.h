@@ -1,18 +1,30 @@
 /**
  * Classe que representa uma árvore de segmentos.
  *
- * Esta versão suporta range updates (incrementar todos os elementos de um
- * intervalo específico com um valor v determinado).
+ * Suporta range queries e point updates, com implementação recursiva.
  *
  * Autor: Edson Alves
- * Data: 30/09/2015
+ * Data: 06/05/2018
  * Licença: LGPL. Sem copyright.
  */
 #ifndef SEGMENT_TREE_H
 #define SEGMENT_TREE_H
 
-#include <climits>
-#include <vector>
+using std::vector;
+
+
+template<typename T>
+class SegmentTree
+{
+    int n;
+    vector<T> tree;
+
+public:
+    SegmentTree(int N)
+        : n(N), tree(4*n, 0)      // 4N is a upper bound to the number of nodes
+    {
+    }
+
 
 using namespace std;
 

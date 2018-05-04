@@ -14,7 +14,6 @@
 #include <util/bitwise_operations.h>
 
 using std::vector;
-using ll = long long;
 
 
 template<typename T>
@@ -39,10 +38,10 @@ public:
             tree[a] = tree[2*a] + tree[2*a + 1];    // Update its parents
     }
 
-    ll sum(int i, int j)
+    T sum(int i, int j)
     {
         int a = i + n, b = j + n;       // The leaves are in second half of tree array
-        ll s = 0;
+        T s = 0;
 
         while (a <= b)
         {
