@@ -30,9 +30,9 @@ public:
         return sum(1, 0, n - 1, i, j);
     }
 
-    void add(int a, T value)
+    void add(int i, T value)
     {
-        add(1, 0, n - 1, a, value);
+        add(1, 0, n - 1, i, value);
     }
 
     int size() const
