@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -pedantic -std=c++11 -Wall
+CFLAGS = -std=c++11 -Wall -W -Wextra -Werror -O2
 #CFLAGS = -pedantic -std=c++11 -w -MMD -g3 -g -fPIC\
 		 -W -Wall -Wextra -Wshadow -Wcast-align -Wcast-qual -Wctor-dtor-privacy\
 		 -Wdisabled-optimization -Wformat=2 -Wlogical-op -Wmissing-declarations\

@@ -3,150 +3,186 @@
 
 #include "geometry/point.h"
 
-SCENARIO( "points initialization and distance", "[point]" )
+SCENARIO("points initialization and distance", "[point]")
 {
-    GIVEN ( "Two points" )
+    GIVEN("Two points")
     {
-        Point P, Q(3, 4);
+        Point<double> P, Q(3.0, 4.0);
 
-        REQUIRE( (P.x == 0 and P.y == 0) );
-        REQUIRE( (Q.x == 3 and Q.y == 4) );
+        REQUIRE((P.x == 0 and P.y == 0));
+        REQUIRE((Q.x == 3 and Q.y == 4));
 
-        REQUIRE( P != Q );
+        REQUIRE(P != Q);
 
-        WHEN( "points are different" )
+        WHEN("points are different")
         {
-            THEN( "distance must be nonzero" )
+            THEN("distance must positive")
             {
-                double d = P.distance(Q);
+                auto d = P.distance(Q);
 
-                REQUIRE( d > 0 );
-                REQUIRE( equals(d, 5.0) );
+                REQUIRE(d > 0);
+                REQUIRE(equals(d, 5.0) );
+
+                auto D = P.squared_distance(Q);
+
+                REQUIRE(D > 0);
+                REQUIRE(equals(D, 25.0) );
             }
         }
 
-        WHEN ( "points are equals" )
+        WHEN("points are equals")
         {
-            double dP = P.distance(P);
-            double dQ = Q.distance(Q);
+            auto dP = P.distance(P);
+            auto dQ = Q.distance(Q);
 
-            THEN( "distance must be zero")
+            THEN("distance must be zero")
             {
-                REQUIRE( equals(dP, 0.0) );
-                REQUIRE( equals(dQ, 0.0) );
+                REQUIRE(equals(dP, 0.0));
+                REQUIRE(equals(dQ, 0.0));
             }
         }
     }
 }
 
-SCENARIO( "translations and rotations", "[point]" )
+SCENARIO("translations, rotations and scale", "[point]")
 {
-    GIVEN( "A point P and two deltas (dx and dy)" )
+    GIVEN("A point P and two deltas (dx and dy)")
     {
-        Point P;
+        Point<double> P;
 
         auto dx = 4.0;
         auto dy = -3.0;
 
-        WHEN( "P is the origin" )
+        WHEN("P is the origin")
         {
-            REQUIRE( P == Point(0, 0) );
+            REQUIRE(P == Point<double>(0, 0));
 
-            THEN( "the translated point Q must have coordinates (dx, dy)" )
+            THEN("the translated point Q must have coordinates (dx, dy)")
             {
                 auto Q = P.translate(dx, dy);
 
-                REQUIRE( equals(Q.x, dx) );
-                REQUIRE( equals(Q.y, dy) );
+                REQUIRE(equals(Q.x, dx));
+                REQUIRE(equals(Q.y, dy));
             }
         }
 
-        WHEN( "P is translated by (dx, dy)" )
+        WHEN("Q is P translated by (dx, dy)")
         {
-            P = Point(-1.0, 2.0);
+            P = Point<double>(-1.0, 2.0);
             auto Q = P.translate(dx, dy);
  
-            THEN ( "then P and Q must be different" )
+            THEN ("then P and Q must be different")
             {
-                REQUIRE( equals(Q.x, 3.0) );                
-                REQUIRE( equals(Q.y, -1.0) );                
-                REQUIRE( P != Q );
+                REQUIRE(equals(Q.x, 3.0));
+                REQUIRE(equals(Q.y, -1.0));
+                REQUIRE(P != Q);
             }
         }
     }
             
-    GIVEN ( "A point" )
+    GIVEN("A point P and two scalars kx and ky)")
     {
-        Point P(1, 0);
-        
-        WHEN( "rotated counterclockwise by 90 degrees" )
+        Point<double> P(-2.5, 3.8);
+
+        auto kx = 4.0;
+        auto ky = -3.0;
+
+        WHEN("P is scaled by k = kx")
         {
-            THEN( "it must be on x ou y axis" )
+            THEN("the result is a point Q = kP")
             {
-                P = P.rotate(PI/2);
-                REQUIRE( P == Point(0, 1) );
+                auto Q = P.scale(kx);
 
-                P = P.rotate(PI/2);
-                REQUIRE( P == Point(-1, 0) );
-
-                P = P.rotate(PI/2);
-                REQUIRE( P == Point(0, -1) );
-
-                P = P.rotate(PI/2);
-                REQUIRE( P == Point(1, 0) );
+                REQUIRE(equals(Q.x, kx*P.x));
+                REQUIRE(equals(Q.y, kx*P.y));
             }
         }
 
-        WHEN ( "rotated counterclockwise by r degrees" )
+        WHEN("P is scaled on both coordinates by kx and ky")
         {
-            THEN ( "must return a point Q rotated by r degrees" );
+            THEN ("the result is a point Q = (kx * Px, ky * Py)")
+            {
+                auto Q = P.scale(kx, ky);
 
-            double r = PI/4;
-            double s = sqrt(2.0)/2.0;
+                REQUIRE(equals(Q.x, kx*P.x));
+                REQUIRE(equals(Q.y, ky*P.y));
+            }
+        }
+    }
+ 
+    GIVEN("A point")
+    {
+        Point<double> P(1.0, 0.0);
+        
+        WHEN("rotated counterclockwise by 90 degrees")
+        {
+            THEN("it must be on x ou y axis")
+            {
+                P = P.rotate(M_PI/2.0);
+                REQUIRE(P == Point<double>(0.0, 1.0));
 
-            auto Q = P.rotate(r);
-            
-            REQUIRE( P == Point(1.0, 0) );
-            REQUIRE( Q == Point(s, s) );
+                P = P.rotate(M_PI/2.0);
+                REQUIRE(P == Point<double>(-1.0, 0.0));
 
-            r = PI/3;
-            s = sqrt(3.0) / 2;
+                P = P.rotate(M_PI/2.0);
+                REQUIRE(P == Point<double>(0.0, -1.0));
 
-            Q = P.rotate(r);
+                P = P.rotate(M_PI/2.0);
+                REQUIRE(P == Point<double>(1.0, 0.0));
+            }
+        }
 
-            REQUIRE( P == Point(1.0, 0) );
-            REQUIRE( Q == Point(0.5, s) );
+        WHEN("rotated counterclockwise by r degrees")
+        {
+            THEN("must lie in a point Q such the segments OP and OQ form a angle of r degrees")
+            {
+                double r = M_PI/4.0;
+                double s = sqrt(2.0)/2.0;
 
-            r = PI/6;
+                auto Q = P.rotate(r);
+                
+                REQUIRE(P == Point<double>(1.0, 0.0));
+                REQUIRE(Q == Point<double>(s, s));
 
-            Q = P.rotate(r);
+                r = M_PI/3.0;
+                s = sqrt(3.0)/2.0;
 
-            REQUIRE( P == Point(1.0, 0) );
-            REQUIRE( Q == Point(s, 0.5) );
+                Q = P.rotate(r);
 
-            r = PI;
+                REQUIRE(P == Point<double>(1.0, 0));
+                REQUIRE(Q == Point<double>(0.5, s));
 
-            Q = P.rotate(r);
+                r = M_PI/6;
 
-            REQUIRE( P == Point(1.0, 0) );
-            REQUIRE( Q == Point(-1.0, 0) );
+                Q = P.rotate(r);
 
-            r = 2*PI;
+                REQUIRE(P == Point<double>(1.0, 0));
+                REQUIRE(Q == Point<double>(s, 0.5));
 
-            Q = P.rotate(r);
+                r = M_PI;
 
-            REQUIRE( P == Point(1.0, 0) );
-            REQUIRE( Q == P );
+                Q = P.rotate(r);
 
-            r = PI / 7;
-            double x = 0.9009688679024191;
-            double y = 0.4338837391175581;
+                REQUIRE(P == Point<double>(1.0, 0));
+                REQUIRE(Q == Point<double>(-1.0, 0));
 
-            Q = P.rotate(r);
+                r = 2*M_PI;
 
-            REQUIRE( P == Point(1.0, 0) );
-            REQUIRE( Q == Point(x, y) );
+                Q = P.rotate(r);
+
+                REQUIRE(P == Point<double>(1.0, 0));
+                REQUIRE(Q == P);
+
+                r = M_PI/7.0;
+
+                double x = 0.9009688679024191;
+                double y = 0.4338837391175581;
+
+                Q = P.rotate(r);
+
+                REQUIRE(P == Point<double>(1.0, 0.0));
+                REQUIRE(Q == Point<double>(x, y));
+            }
         }
     }
 }
-

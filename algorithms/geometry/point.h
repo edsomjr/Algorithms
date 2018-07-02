@@ -10,21 +10,24 @@
 
 #include <cmath>
 
-#define EPS 1e-9    // Delta de comparação entre doubles
-#define PI  3.141592653589793
+template<typename T>
+bool equals(const T& a, const T& b)
+{
+    return a == b;
+}
 
-// Compara duas variáveis do tipo double usando o delta EPS
 bool equals(double a, double b)
 {
+    static const auto EPS = 1e-9;
     return fabs(a - b) < EPS;
 }
 
+template<typename T>
 class Point {
 public:
-    double x;
-    double y;
+    T x, y;
 
-    Point(double xv = 0, double yv = 0) : x(xv), y(yv) {}
+    Point(T xv = 0, T yv = 0) : x(xv), y(yv) {}
 
     bool operator==(const Point& P) const
     {
@@ -46,17 +49,32 @@ public:
         return hypot(x - P.x, y - P.y);
     }
 
+    T squared_distance(const Point& P) const
+    {
+        return (x - P.x) * (x - P.x) + (y - P.y) * (y - P.y);
+    }
+
     Point rotate(double angle)
     {
         auto px = cos(angle) * x - sin(angle) * y;
         auto py = sin(angle) * x + cos(angle) * y;
 
-        return Point { px, py };
+        return Point { T(px), T(py) };
     } 
 
-    Point translate(double dx, double dy) const
+    Point translate(T dx, T dy) const
     {
         return Point(x + dx, y + dy);
+    }
+
+    Point scale(T kx, T ky) const
+    {
+        return Point(kx*x, ky*y);
+    }
+
+    Point scale(T k) const
+    {
+        return scale(k, k);
     }
 };
 
