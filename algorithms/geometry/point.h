@@ -5,16 +5,10 @@
  * Data: 18/07/2016
  * Licença: LGPL. Sem copyright.
  */
-#ifndef GEOMETRY_POINT_H
-#define GEOMETRY_POINT_H
+#ifndef GEOMEdoubleRY_POINdouble_H
+#define GEOMEdoubleRY_POINdouble_H
 
 #include <cmath>
-
-template<typename T>
-bool equals(const T& a, const T& b)
-{
-    return a == b;
-}
 
 bool equals(double a, double b)
 {
@@ -22,12 +16,11 @@ bool equals(double a, double b)
     return fabs(a - b) < EPS;
 }
 
-template<typename T>
 class Point {
 public:
-    T x, y;
+    double x, y;
 
-    Point(T xv = 0, T yv = 0) : x(xv), y(yv) {}
+    Point(double xv = 0, double yv = 0) : x(xv), y(yv) {}
 
     bool operator==(const Point& P) const
     {
@@ -49,30 +42,25 @@ public:
         return hypot(x - P.x, y - P.y);
     }
 
-    T squared_distance(const Point& P) const
-    {
-        return (x - P.x) * (x - P.x) + (y - P.y) * (y - P.y);
-    }
-
     Point rotate(double angle)
     {
         auto px = cos(angle) * x - sin(angle) * y;
         auto py = sin(angle) * x + cos(angle) * y;
 
-        return Point { T(px), T(py) };
+        return Point { double(px), double(py) };
     } 
 
-    Point translate(T dx, T dy) const
+    Point translate(double dx, double dy) const
     {
         return Point(x + dx, y + dy);
     }
 
-    Point scale(T kx, T ky) const
+    Point scale(double kx, double ky) const
     {
         return Point(kx*x, ky*y);
     }
 
-    Point scale(T k) const
+    Point scale(double k) const
     {
         return scale(k, k);
     }

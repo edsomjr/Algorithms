@@ -7,7 +7,7 @@ SCENARIO("points initialization and distance", "[point]")
 {
     GIVEN("Two points")
     {
-        Point<double> P, Q(3.0, 4.0);
+        Point P, Q(3.0, 4.0);
 
         REQUIRE((P.x == 0 and P.y == 0));
         REQUIRE((Q.x == 3 and Q.y == 4));
@@ -22,11 +22,6 @@ SCENARIO("points initialization and distance", "[point]")
 
                 REQUIRE(d > 0);
                 REQUIRE(equals(d, 5.0) );
-
-                auto D = P.squared_distance(Q);
-
-                REQUIRE(D > 0);
-                REQUIRE(equals(D, 25.0) );
             }
         }
 
@@ -48,14 +43,14 @@ SCENARIO("translations, rotations and scale", "[point]")
 {
     GIVEN("A point P and two deltas (dx and dy)")
     {
-        Point<double> P;
+        Point P;
 
         auto dx = 4.0;
         auto dy = -3.0;
 
         WHEN("P is the origin")
         {
-            REQUIRE(P == Point<double>(0, 0));
+            REQUIRE(P == Point(0, 0));
 
             THEN("the translated point Q must have coordinates (dx, dy)")
             {
@@ -68,7 +63,7 @@ SCENARIO("translations, rotations and scale", "[point]")
 
         WHEN("Q is P translated by (dx, dy)")
         {
-            P = Point<double>(-1.0, 2.0);
+            P = Point(-1.0, 2.0);
             auto Q = P.translate(dx, dy);
  
             THEN ("then P and Q must be different")
@@ -82,7 +77,7 @@ SCENARIO("translations, rotations and scale", "[point]")
             
     GIVEN("A point P and two scalars kx and ky)")
     {
-        Point<double> P(-2.5, 3.8);
+        Point P(-2.5, 3.8);
 
         auto kx = 4.0;
         auto ky = -3.0;
@@ -112,23 +107,23 @@ SCENARIO("translations, rotations and scale", "[point]")
  
     GIVEN("A point")
     {
-        Point<double> P(1.0, 0.0);
+        Point P(1.0, 0.0);
         
         WHEN("rotated counterclockwise by 90 degrees")
         {
             THEN("it must be on x ou y axis")
             {
                 P = P.rotate(M_PI/2.0);
-                REQUIRE(P == Point<double>(0.0, 1.0));
+                REQUIRE(P == Point(0.0, 1.0));
 
                 P = P.rotate(M_PI/2.0);
-                REQUIRE(P == Point<double>(-1.0, 0.0));
+                REQUIRE(P == Point(-1.0, 0.0));
 
                 P = P.rotate(M_PI/2.0);
-                REQUIRE(P == Point<double>(0.0, -1.0));
+                REQUIRE(P == Point(0.0, -1.0));
 
                 P = P.rotate(M_PI/2.0);
-                REQUIRE(P == Point<double>(1.0, 0.0));
+                REQUIRE(P == Point(1.0, 0.0));
             }
         }
 
@@ -141,36 +136,36 @@ SCENARIO("translations, rotations and scale", "[point]")
 
                 auto Q = P.rotate(r);
                 
-                REQUIRE(P == Point<double>(1.0, 0.0));
-                REQUIRE(Q == Point<double>(s, s));
+                REQUIRE(P == Point(1.0, 0.0));
+                REQUIRE(Q == Point(s, s));
 
                 r = M_PI/3.0;
                 s = sqrt(3.0)/2.0;
 
                 Q = P.rotate(r);
 
-                REQUIRE(P == Point<double>(1.0, 0));
-                REQUIRE(Q == Point<double>(0.5, s));
+                REQUIRE(P == Point(1.0, 0));
+                REQUIRE(Q == Point(0.5, s));
 
                 r = M_PI/6;
 
                 Q = P.rotate(r);
 
-                REQUIRE(P == Point<double>(1.0, 0));
-                REQUIRE(Q == Point<double>(s, 0.5));
+                REQUIRE(P == Point(1.0, 0));
+                REQUIRE(Q == Point(s, 0.5));
 
                 r = M_PI;
 
                 Q = P.rotate(r);
 
-                REQUIRE(P == Point<double>(1.0, 0));
-                REQUIRE(Q == Point<double>(-1.0, 0));
+                REQUIRE(P == Point(1.0, 0));
+                REQUIRE(Q == Point(-1.0, 0));
 
                 r = 2*M_PI;
 
                 Q = P.rotate(r);
 
-                REQUIRE(P == Point<double>(1.0, 0));
+                REQUIRE(P == Point(1.0, 0));
                 REQUIRE(Q == P);
 
                 r = M_PI/7.0;
@@ -180,8 +175,8 @@ SCENARIO("translations, rotations and scale", "[point]")
 
                 Q = P.rotate(r);
 
-                REQUIRE(P == Point<double>(1.0, 0.0));
-                REQUIRE(Q == Point<double>(x, y));
+                REQUIRE(P == Point(1.0, 0.0));
+                REQUIRE(Q == Point(x, y));
             }
         }
     }

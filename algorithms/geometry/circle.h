@@ -8,13 +8,9 @@
 #ifndef GEOMETRY_CIRCLE_H
 #define GEOMETRY_CIRCLE_H
 
+#include <vector>
+
 #include "point.h"
-
-#include <iostream>
-
-using std::min;
-using std::max;
-using std::pair;
 
 class Circle {
 public:
@@ -22,13 +18,17 @@ public:
     double r;
 
     typedef enum { IN, OUT, ON } PointPosition;
-    typedef enum { ZERO = 0, TWO = 2, INF = -1 } Circles;
 
-    Circle(const Point& Cv = Point(0, 0), double rv = 1.0) : C(Cv), r(rv) {}
+    Circle(const Point& Cv = Point(0.0, 0.0), double rv = 1.0) : C(Cv), r(rv) {}
 
     bool operator==(const Circle& c) const
     {
         return C == c.C and equals(r, c.r);
+    }
+
+    bool operator!=(const Circle& c) const
+    {
+        return not (*this == c);
     }
 
     PointPosition position(const Point& P) const
@@ -40,17 +40,17 @@ public:
 
     double perimeter() const
     {
-        return 2.0 * PI * r;
+        return 2.0 * M_PI * r;
     }
 
     double area() const
     {
-        return PI * r * r;
+        return M_PI * r * r;
     }
 
     double arc(double a) const
     {
-        return (a / (2*PI)) * perimeter();
+        return (a / (2*M_PI)) * perimeter();
     }
 
     double chord(double a) const
@@ -60,7 +60,7 @@ public:
 
     double sector(double a) const
     {
-        return (a / (2*PI)) * area();
+        return (a / (2*M_PI)) * area();
     }
 
     double segment(double a) const
@@ -72,23 +72,70 @@ public:
         return sector(a) - T;
     }
 
-    static bool
-    from2PointsAndRadius(const Point& P, const Point& Q, double r, Circle& c)
+    static std::vector<Circle>
+    from_2_points_and_radius(const Point& P, const Point& Q, double r)
     {
+        std::vector<Circle> cs;
+
+        if (P == Q)
+        {
+            cs.push_back(Circle(P.translate(r, 0), r));
+            cs.push_back(Circle(P.translate(0, r), r));
+            cs.push_back(Circle(P.translate(-r, 0), r));
+            cs.push_back(Circle(P.translate(0, -r), r));
+
+            return cs;
+        }
+
         double d2 = (P.x - Q.x) * (P.x - Q.x) + (P.y - Q.y) * (P.y - Q.y);
         double det = r * r / d2 - 0.25;
 
         if (det < 0.0)
-            return false;
+            return cs;
 
         double h = sqrt(det);
 
         auto x = (P.x + Q.x) * 0.5 + (P.y - Q.y) * h;
         auto y = (P.y + Q.y) * 0.5 + (Q.x - P.x) * h;
 
-        c = Circle(Point(x, y), r);
+        cs.push_back(Circle(Point(x, y), r));
 
-        return true;
+        x = (Q.x + P.x) * 0.5 + (Q.y - P.y) * h;
+        y = (Q.y + P.y) * 0.5 + (P.x - Q.x) * h;
+
+        cs.push_back(Circle(Point(x, y), r));
+
+        return cs;
+    }
+
+    static std::vector<Circle>
+    from_3_points(const Point& P, const Point& Q, const Point& R)
+    {
+        std::vector<Circle> cs;
+
+        auto a = 2*(Q.x - P.x);
+        auto b = 2*(Q.y - P.y);
+        auto c = 2*(R.x - P.x);
+        auto d = 2*(R.y - P.y);
+
+        auto det = a*d - b*c;
+
+        // Colinear points
+        if (equals(det, 0))
+            return cs;
+
+        auto k1 = (Q.x*Q.x + Q.y*Q.y) - (P.x*P.x + P.y*P.y);
+        auto k2 = (R.x*R.x + R.y*R.y) - (P.x*P.x + P.y*P.y);
+
+        auto cx = (k1*d - k2*b)/det;
+        auto cy = (a*k2 - c*k1)/det;
+
+        Point C(cx, cy);
+        auto r = C.distance(P);
+
+        cs.push_back(Circle(C, r));
+
+        return cs;
     }
 };
 
