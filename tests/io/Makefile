@@ -1,5 +1,8 @@
-CC = g++
-CFLAGS = -std=c++11 -Wall -W -Wextra -Werror -O2
+CC = gcc
+CFLAGS = -Wall -W -Wextra -Werror -O2
+
+CPPC = g++
+CPPFLAGS = -std=c++11 -Wall -W -Wextra -Werror -O2
 #CFLAGS = -pedantic -std=c++11 -w -MMD -g3 -g -fPIC\
 		 -W -Wall -Wextra -Wshadow -Wcast-align -Wcast-qual -Wctor-dtor-privacy\
 		 -Wdisabled-optimization -Wformat=2 -Wlogical-op -Wmissing-declarations\
@@ -15,6 +18,9 @@ CLASSPATH = ../../
 SRC = ${wildcard *.cpp}
 TESTS = ${SRC:.cpp=.exe}
 
+CSRC = ${wildcard *.c}
+CTESTS = ${CSRC:.c=.exe}
+
 JSRC = ${wildcard *.java}
 JTESTS = ${JSRC:.java=.class}
 
@@ -25,11 +31,15 @@ JTESTS = ${JSRC:.java=.class}
 .SUFFIXES: .java
 
 all:
-	$(MAKE) $(JTESTS)
+	$(MAKE) $(JTESTS) $(TESTS) $(CTESTS)
+
+%.exe: %.c
+	@echo Building $@
+	$(CC) $(CFLAGS) $(INCLUDES) $< -o $@
 
 %.exe: %.cpp
 	@echo Building $@
-	$(CC) $(CFLAGS) $(INCLUDES) $< -o $@
+	$(CPPC) $(CPPFLAGS) $(INCLUDES) $< -o $@
 
 %.class: %.java
 	@echo Building $@
