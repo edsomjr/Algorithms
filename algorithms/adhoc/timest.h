@@ -8,12 +8,13 @@
 #ifndef TIMEST_H
 #define TIMEST_H
 
-#define SECS_IN_A_DAY   86400
-#define SECS_IN_A_HOUR  3600
-#define SECS_IN_A_MIN   60
+#include <iostream>
 
-class Time
-{
+const int SECS_IN_A_DAY { 86400 };
+const int SECS_IN_A_HOUR { 3600 };
+const int SECS_IN_A_MIN { 60 };
+
+class Time {
 public:
     Time(int h = 0, int m = 0, int s = 0)
     {
@@ -44,6 +45,14 @@ public:
         m_secs %= SECS_IN_A_DAY;
     }
     
+    std::string format() const
+    {
+        char buffer[32];
+        sprintf(buffer, "%02d:%02d:%02d", hours(), minutes(), seconds());
+
+        return std::string(buffer);
+    }
+
 private:
     int m_secs;
 };
