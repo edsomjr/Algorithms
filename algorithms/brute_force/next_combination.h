@@ -23,7 +23,7 @@ bool next_combination(int n, int m, std::string& combination, int& x, int& y)
     if (combination.empty())
     {
         combination = std::string(m, '1');
-        combination.resize(n + 1, '0');
+        combination.resize(n, '0');
 
         x = -1;
         y = -1;

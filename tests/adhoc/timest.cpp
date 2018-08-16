@@ -3,7 +3,7 @@
 
 #include "adhoc/timest.h"
 
-SCENARIO("Time construction", "[tim]")
+SCENARIO("Time construction", "[time]")
 {
     GIVEN("Hours, minutes and seconds")
     {
