@@ -8,19 +8,14 @@
 #ifndef DATE_H
 #define DATE_H
 
-static const int days_in_month_regular[]
-    {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+#include <iostream>
 
-static const int days_in_month_leap[]
-    {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static const int days_in_month_regular[] {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static const int days_in_month_leap[] {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-class Date
-{
+class Date {
 public:
-    Date(int d = 0, int m = 0, int y = 0)
-        : m_d(d), m_m(m), m_y(y)
-    {
-    }
+    Date(int d = 0, int m = 0, int y = 0) : m_d(d), m_m(m), m_y(y) { }
 
     void add(int days)
     {
@@ -29,19 +24,21 @@ public:
         date_from_days(date_days, m_d, m_m, m_y);
     }
     
-    int day() const
+    int day() const { return m_d; }
+    int month() const { return m_m; }
+    int year() const { return m_y; }
+
+    std::string format() const
     {
-        return m_d;
+        char buffer[32];
+        sprintf(buffer, "%02d/%02d/%04d", m_d, m_m, m_y);
+
+        return std::string(buffer);
     }
 
-    int month() const
+    long long operator-(const Date& d) const
     {
-        return m_m;
-    }
-
-    int year() const
-    {
-        return m_y;
+        return days_from_zero(m_d, m_m, m_y) - days_from_zero(d.day(), d.month(), d.year());
     }
 
     static bool is_leap(int year)
@@ -49,11 +46,17 @@ public:
         return (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0);
     }
 
+    static Date from_days(long long days)
+    {
+        int d, m, y;
+        date_from_days(days, d, m, y);
+        return Date(d, m, y);
+    } 
 
 private:
     int m_d, m_m, m_y;
 
-    int leaps(int y)
+    static int leaps(int y)
     {
         int div4 = y / 4;
         int div100 = y / 100;
@@ -62,38 +65,30 @@ private:
         return div4 - div100 + div400;
     }
 
-    long long days_from_zero(int d, int m, int y)
+    static long long days_from_zero(int d, int m, int y)
     {
         long long days = d;
-
-        const int *days_in_month = Date::is_leap(y) ? days_in_month_leap :
-            days_in_month_regular;
+        const int *days_in_month = Date::is_leap(y) ? days_in_month_leap : days_in_month_regular;
 
         for (int i = 1; i < m; i++)
-        {
             days += days_in_month[i];
-        }
 
         int leap_years = leaps(y - 1);
-
         days += 365*y + leap_years;
 
         return days;
     }
 
-    void date_from_days(int days, int& d, int &m, int& y)
+    static void date_from_days(int days, int& d, int &m, int& y)
     {
         y = days / 366;
 
         while (days_from_zero(0, 0, y + 1) < days)
-        {
             y++;
-        }
 
         days -= days_from_zero(0, 0, y);
 
-        const int *days_in_month = Date::is_leap(y) ? days_in_month_leap :
-            days_in_month_regular;
+        const int *days_in_month = Date::is_leap(y) ? days_in_month_leap : days_in_month_regular;
 
         m = 1;
 
