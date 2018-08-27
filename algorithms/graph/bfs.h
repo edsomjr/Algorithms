@@ -8,34 +8,40 @@
 #ifndef BFS_H
 #define BFS_H
 
-#include "graph.h"
 #include <queue>
+#include <bitset>
+#include <vector>
+#include <functional>
 
-using std::queue;
+using namespace std;
 
-#define INF -1
+const int MAX { 100010 };
+bitset<MAX> visited;
+vector<int> adj[MAX];
+int dist[MAX];
 
-typedef vector<int> vi;
-
-void bfs(int s, const Graph& g)
+void bfs(int s, function<void(int)> process)
 {
-    vi dist(g.V() + 1, INF);
-    dist[s] = 0; 
-
     queue<int> q;
+
+    dist[s] = 0; 
+    visited[s] = true;
     q.push(s);
 
     while (not q.empty())
     {
-        int u = q.front();
+        auto u = q.front();
         q.pop();
 
-        for (auto v : g.adj()[u])
+        process(u);
+
+        for (const auto& v : adj[u])
         {
-            if (dist[v.first] == INF)
+            if (not visited[v])
             {
-                dist[v.first] = dist[u] + 1;
-                q.push(v.first);
+                dist[v] = dist[u] + 1;
+                visited[v] = true;
+                q.push(v);
             }
         }
     }
