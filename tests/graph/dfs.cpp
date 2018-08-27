@@ -3,30 +3,23 @@
 
 #include "graph/dfs.h"
 
-vector<int> ans;
-
-void process(int u)
-{
-    ans.push_back(u);
-}
-
 SCENARIO("dfs traversal", "[graph]")
 {
-    GIVEN("A undirected graph")
+    GIVEN("An undirected graph")
     {
         for (int u = 0; u < MAX; ++u)
             adj[u].clear();
 
         visited.reset();
-        ans.clear();
 
 
         WHEN("there is just one vertex")
         {
             THEN("the DFS must return [1]")
             {
-                vector<int> res { 1 };
-                dfs(1, process);
+                vector<int> res { 1 }, ans;
+
+                dfs(1, [&](int u) { ans.push_back(u); });
  
                 REQUIRE(ans == res);
             }
@@ -45,8 +38,9 @@ SCENARIO("dfs traversal", "[graph]")
 
             THEN("the DFS must return [1, 3, 4, 2]")
             {
-                vector<int> res { 1, 3, 4, 2 };
-                dfs(1, process);
+                vector<int> res { 1, 3, 4, 2 }, ans;
+
+                dfs(1, [&](int u) { ans.push_back(u); });
 
                 REQUIRE(ans == res);
             }
@@ -61,8 +55,9 @@ SCENARIO("dfs traversal", "[graph]")
 
             THEN("the DFS must return [1, 3]")
             {
-                vector<int> res { 1, 3 };
-                dfs(1, process);
+                vector<int> res { 1, 3 }, ans;
+
+                dfs(1, [&](int u) { ans.push_back(u); });
 
                 REQUIRE(ans == res);
             }

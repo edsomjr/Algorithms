@@ -10,6 +10,7 @@
 
 #include <bitset>
 #include <vector>
+#include <functional>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ vector<int> adj[MAX];
 
 // a variável visited deve ser inicializada com falso (visited.reset()) antes da chamada
 // desta função
-void dfs(int u, void (*process)(int))
+void dfs(int u, function<void(int)> process)
 {
     if (visited[u])
         return;
