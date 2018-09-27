@@ -31,37 +31,38 @@ SCENARIO( "line initialization and comparison", "[line]" )
 
         WHEN ( "they don't have the same inclination" )
         {
-            THEN ( "they are concurrent" );
+            THEN ( "they are concurrent" )
+            {
+                r = Line(1, 0, 1);
+                s = Line(0, 1, 1);
 
-            r = Line(1, 0, 1);
-            s = Line(0, 1, 1);
+                REQUIRE( r.concurrent(s) );
 
-            REQUIRE( r.concurrent(s) );
+                r = Line(1, 0, 1);
+                s = Line(1, 1, 1);
 
-            r = Line(1, 0, 1);
-            s = Line(1, 1, 1);
+                REQUIRE( r.concurrent(s) );
 
-            REQUIRE( r.concurrent(s) );
+                r = Line(1, 1, 1);
+                s = Line(1, 0, 1);
 
-            r = Line(1, 1, 1);
-            s = Line(1, 0, 1);
+                REQUIRE( r.concurrent(s) );
 
-            REQUIRE( r.concurrent(s) );
+                r = Line(1, 1, 1);
+                s = Line(1, 1, 1);
 
-            r = Line(1, 1, 1);
-            s = Line(1, 1, 1);
+                REQUIRE( not r.concurrent(s) );
 
-            REQUIRE( not r.concurrent(s) );
+                r = Line(1, 2, 1);
+                s = Line(3, 4, 1);
 
-            r = Line(1, 2, 1);
-            s = Line(3, 4, 1);
+                REQUIRE( r.concurrent(s) );
 
-            REQUIRE( r.concurrent(s) );
+                r = Line(1, 0, 1);
+                s = Line(1, 1, 1);
 
-            r = Line(1, 0, 1);
-            s = Line(1, 1, 1);
-
-            REQUIRE( r.concurrent(s) );
+                REQUIRE( r.concurrent(s) );
+            }
         }
     }
 }

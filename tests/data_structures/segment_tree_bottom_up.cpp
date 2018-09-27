@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 #include <ctime>
-#include "data_structures/segment_tree_non_recursive.h"
+#include "data_structures/segment_tree_bottom_up.h"
 
 SCENARIO("segment tree initialization", "[segtree]")
 {

@@ -8,9 +8,6 @@
 #ifndef BITWISE_OPERATIONS_H
 #define BITWISE_OPERATIONS_H
 
-using std::cout;
-using std::endl;
-
 int least_significant_bit(int n)
 {
     return n & -n;
