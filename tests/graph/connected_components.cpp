@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "tests/catch.hpp"
 
-#include "graph/cc.h"
+#include "graph/connected_components.h"
 
 using ii = pair<int, int>;
 

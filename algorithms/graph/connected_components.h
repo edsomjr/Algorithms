@@ -6,8 +6,8 @@
  * Data: 25/02/2016
  * Licença: LGPL. Sem copyright.
  */
-#ifndef CC_H
-#define CC_H
+#ifndef CONNECTED_COMPONENTS_H
+#define CONNECTED_COMPONENTS_H
 
 #include <iostream>
 #include <functional>
