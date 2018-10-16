@@ -27,7 +27,7 @@ class SegmentTree
 
 public:
     SegmentTree(int N)
-        : n(N), tree(4*n, 0), lazy(4*n, 0)      // 4N is a upper bound to the number of nodes
+        : n(N), tree(4*n, 0), lazy(4*n, 0)      // 4N is an upper bound to the number of nodes
     {
     }
 
